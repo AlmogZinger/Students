@@ -1,4 +1,5 @@
 from __future__ import annotations
+from pathlib import Path
 import typing 
 import strawberry
 import datetime
@@ -40,28 +41,24 @@ class TestGQL:
 class Query:
     @strawberry.field
     def students(root) -> list[StudentGQL]:
+        return get_studentsGQL_from_db()
+
+def get_studentsGQL_from_db():
         students_list = []
         students = Student.objects.all()    
         for student in students:    
             students_list.append(StudentGQL.from_orm(student))
         return students_list
-    # @strawberry.field
-    # def tests(root) -> list["Test"]:
-    #     test_list = []
-    #     tests = Test.objects.all()    
-    #     for test in tests:    
-    #         test_list.append(TestGQL.from_orm(
-    #             TestGQL,test))
-    #     return test_list
+
 
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def add_student(self,name:str,birth: datetime.date)->StudentGQL:
+    def add_student(self,name:str,birth: datetime.date)->list[StudentGQL]:
         stud = Student(name = name, birth_date = birth )
         stud.save(force_insert= True)
         # stu =Student.objects.create(name =name , birth_date = birth)
-        return StudentGQL.from_orm(stud)
+        return get_studentsGQL_from_db()
 
     @strawberry.mutation
     def submitTestResults(self, studentID :int, subject:str, grade:int )->StudentGQL:
@@ -71,3 +68,5 @@ class Mutation:
     
 
 schema = strawberry.Schema(query=Query, mutation=Mutation)
+
+(Path(__file__).parent / "schema.graphql").write_text(str(schema))

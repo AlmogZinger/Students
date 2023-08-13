@@ -1,0 +1,26 @@
+"""Date (isoformat)"""
+scalar Date
+
+"""Date with time (isoformat)"""
+scalar DateTime
+
+type Mutation {
+  addStudent(name: String!, birth: Date!): [Student!]!
+  submitTestResults(studentID: Int!, subject: String!, grade: Int!): Student!
+}
+
+type Query {
+  students: [Student!]!
+}
+
+type Student {
+  id: ID!
+  name: String!
+  birthDate: DateTime!
+  test: [Test!]!
+}
+
+type Test {
+  subject: String!
+  grade: Int!
+}
