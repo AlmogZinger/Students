@@ -1,12 +1,12 @@
+from __future__ import annotations
 from django.db import models
 
-# Create your models here.
+
     
 class Student(models.Model):
-    name = models.CharField(max_length=100)
-    subject = models.CharField(max_length=100)
-    birth_date = models.DateField()
-
+    name = models.CharField("the person's name",max_length=100)   
+    birth_date = models.DateField() 
+    
     def __str__(self):
         return self.name    
     
