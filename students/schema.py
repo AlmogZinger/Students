@@ -14,7 +14,7 @@ class StudentGQL:
      id : strawberry.ID
      name :str
      birthDate : datetime.datetime
-     test : list["TestGQL"]
+     tests: list["TestGQL"]
 
      @classmethod
      def from_orm(cls, student: Student) -> StudentGQL:
