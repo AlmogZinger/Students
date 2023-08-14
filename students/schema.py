@@ -54,11 +54,11 @@ def get_studentsGQL_from_db():
 @strawberry.type
 class Mutation:
     @strawberry.mutation
-    def add_student(self,name:str,birth: datetime.date)->list[StudentGQL]:
-        stud = Student(name = name, birth_date = birth )
-        stud.save(force_insert= True)
+    def add_student(self,name:str,birth: datetime.date)->StudentGQL:
+        student = Student(name = name, birth_date = birth )
+        student.save(force_insert= True)
         # stu =Student.objects.create(name =name , birth_date = birth)
-        return get_studentsGQL_from_db()
+        return StudentGQL.from_orm(student)
 
     @strawberry.mutation
     def submitTestResults(self, studentID :int, subject:str, grade:int )->StudentGQL:
